@@ -37,41 +37,43 @@ export default function SchoolScheduleTimer() {
   const [timeRemaining, setTimeRemaining] = useState(null);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      const now = dayjs();
-      setCurrentTime(now);
+  const timer = setInterval(() => {
+    const now = dayjs();
+    setCurrentTime(now);
 
-      const isWednesday = now.day() === 3;
-      const todaySchedule = isWednesday ? schedule.wednesday : schedule.default;
-      let found = false;
+    const isWednesday = now.day() === 3;
+    const todaySchedule = isWednesday ? schedule.wednesday : schedule.default;
+    let found = false;
 
-      for (let i = 0; i < todaySchedule.length; i++) {
-        const period = todaySchedule[i];
-        const start = dayjs.tz(now.format("YYYY-MM-DD") + "T" + period.start, "America/Los_Angeles");
-        const end = dayjs.tz(now.format("YYYY-MM-DD") + "T" + period.end, "America/Los_Angeles");
-        if (now.isAfter(start) && now.isBefore(end)) {
-          setCurrentPeriod(period.period);
-          setTimeRemaining(end.diff(now));
-          found = true;
-          break;
-        }
+    for (let i = 0; i < todaySchedule.length; i++) {
+      const period = todaySchedule[i];
+      const start = dayjs.tz(now.format("YYYY-MM-DD") + "T" + period.start, "America/Los_Angeles");
+      const end = dayjs.tz(now.format("YYYY-MM-DD") + "T" + period.end, "America/Los_Angeles");
+      if (now.isAfter(start) && now.isBefore(end)) {
+        setCurrentPeriod(period.period);
+        setTimeRemaining(end.diff(now));
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      const schoolStart = dayjs.tz(now.format("YYYY-MM-DD") + "T08:00", "America/Los_Angeles");
+      const schoolEnd = dayjs.tz(now.format("YYYY-MM-DD") + "T16:00", "America/Los_Angeles");
+
+      if (now.isBefore(schoolStart) || now.isAfter(schoolEnd)) {
+        setCurrentPeriod("School Closed");
+      } else {
+        setCurrentPeriod("Passing Time");
       }
 
-if (!found) {
-  const schoolStart = dayjs.tz(now.format("YYYY-MM-DD") + "T08:00", "America/Los_Angeles");
-  const schoolEnd = dayjs.tz(now.format("YYYY-MM-DD") + "T16:00", "America/Los_Angeles");
+      setTimeRemaining(null);
+    }
+  }, 1000); // ✅ THIS comma is closing the setInterval
 
-  if (now.isBefore(schoolStart) || now.isAfter(schoolEnd)) {
-    setCurrentPeriod("School Closed");
-  } else {
-    setCurrentPeriod("Passing Time");
-  }
+  return () => clearInterval(timer); // ✅ Clean-up function
+}, []); // ✅ Dependency array for useEffect
 
-  setTimeRemaining(null);
-}, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
 
   const formatTime = (ms) => {
     if (ms == null) return "--:--";
