@@ -36,7 +36,7 @@ export default function SchoolScheduleTimer() {
   const [currentPeriod, setCurrentPeriod] = useState(null);
   const [timeRemaining, setTimeRemaining] = useState(null);
 
-  useEffect(() => {
+useEffect(() => {
   const timer = setInterval(() => {
     const now = dayjs();
     setCurrentTime(now);
@@ -69,11 +69,10 @@ export default function SchoolScheduleTimer() {
 
       setTimeRemaining(null);
     }
-  }, 1000); // ✅ THIS comma is closing the setInterval
+  }, 1000);
 
-  return () => clearInterval(timer); // ✅ Clean-up function
-}, []); // ✅ Dependency array for useEffect
-
+  return () => clearInterval(timer);
+}, []);
 
   const formatTime = (ms) => {
     if (ms == null) return "--:--";
