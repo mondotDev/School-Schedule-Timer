@@ -57,11 +57,18 @@ export default function SchoolScheduleTimer() {
         }
       }
 
-      if (!found) {
-        setCurrentPeriod("No Active Period");
-        setTimeRemaining(null);
-      }
-    }, 1000);
+if (!found) {
+  const schoolStart = dayjs.tz(now.format("YYYY-MM-DD") + "T08:00", "America/Los_Angeles");
+  const schoolEnd = dayjs.tz(now.format("YYYY-MM-DD") + "T16:00", "America/Los_Angeles");
+
+  if (now.isBefore(schoolStart) || now.isAfter(schoolEnd)) {
+    setCurrentPeriod("School Closed");
+  } else {
+    setCurrentPeriod("Passing Time");
+  }
+
+  setTimeRemaining(null);
+}, 1000);
 
     return () => clearInterval(timer);
   }, []);
