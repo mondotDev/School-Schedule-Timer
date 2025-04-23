@@ -9,6 +9,40 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("America/Los_Angeles");
 
+// Helper to find the Nth weekday in a month
+function getNthWeekdayOfMonth(year, month, weekday, nth) {
+  let date = dayjs(`${year}-${month}-01`);
+  let count = 0;
+  while (date.month() + 1 === month) {
+    if (date.day() === weekday) {
+      count++;
+      if (count === nth) return date;
+    }
+    date = date.add(1, "day");
+  }
+  return null;
+}
+
+// Helper to find the last weekday in a month
+function getLastWeekdayOfMonth(year, month, weekday) {
+  let date = dayjs(`${year}-${month}-01`).endOf("month");
+  while (date.day() !== weekday) {
+    date = date.subtract(1, "day");
+  }
+  return date;
+}
+
+// Wrapper: is today between 2nd Wed of Sept and last Wed of May?
+function isWednesdayScheduleActive(now) {
+  const year = now.year();
+  const secondWedInSept = getNthWeekdayOfMonth(year, 9, 3, 2); // Sept, Wed, 2nd
+  const lastWedInMay = getLastWeekdayOfMonth(year, 5, 3);      // May, Wed
+
+  return now.isSame(secondWedInSept, 'day') || now.isSame(lastWedInMay, 'day') ||
+    (now.isAfter(secondWedInSept) && now.isBefore(lastWedInMay));
+}
+
+
 const schedule = {
   default: [
     { period: "Period 1", start: "08:30", end: "09:18" },
@@ -43,7 +77,8 @@ export default function SchoolScheduleTimer() {
       setCurrentTime(now);
 
       const isWednesday = now.day() === 3;
-      const todaySchedule = isWednesday ? schedule.wednesday : schedule.default;
+      const useWednesdaySchedule = isWednesday && isWednesdayScheduleActive(now);
+      const todaySchedule = useWednesdaySchedule ? schedule.wednesday : schedule.default;
       let found = false;
 
       for (let i = 0; i < todaySchedule.length; i++) {
