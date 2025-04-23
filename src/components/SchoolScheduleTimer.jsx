@@ -72,24 +72,34 @@ function SchoolScheduleTimer() {
   }
 
   return (
-    <div className="text-center p-4 text-white">
-      <h1 className="text-4xl mb-4">{currentTime.format("hh:mm A")}</h1>
-      {activePeriods.length > 0 ? (
-        activePeriods.map((period) => (
-          <div key={period.period} className="mb-3">
-            <h2 className="text-2xl">
-              {period.period === "Lunch" ? "Lunch" : `Period ${period.period}`}
-            </h2>
-            <h3 className="text-xl">{getTimeLeft(period.end)}</h3>
+  <div className="text-center p-4 text-white min-h-screen flex flex-col items-center justify-center bg-black">
+    <h1 className="text-5xl font-bold mb-6">{currentTime.format("hh:mm:ss A")}</h1>
+
+    {activePeriods.length > 0 ? (
+      activePeriods.map((period) => (
+        <div
+          key={period.period}
+          className="bg-white text-black rounded-xl px-6 py-4 mb-4 w-72 shadow-lg"
+        >
+          <div className="text-sm uppercase text-gray-500 font-semibold mb-1">
+            Period
           </div>
-        ))
-      ) : (
-        <>
-          <h2 className="text-2xl">{currentTime.hour() < 8 || currentTime.hour() >= 16 ? "School Closed" : "Passing Time"}</h2>
-        </>
-      )}
-    </div>
-  );
+          <div className="text-xl font-bold">
+            {period.period}
+          </div>
+          <div className="text-md">
+            {getTimeLeft(period.end)}
+          </div>
+        </div>
+      ))
+    ) : (
+      <div className="text-xl text-gray-400">
+        {currentTime.hour() < 8 || currentTime.hour() >= 16 ? "School Closed" : "Passing Time"}
+      </div>
+    )}
+  </div>
+);
+
 }
 
 export default SchoolScheduleTimer;
