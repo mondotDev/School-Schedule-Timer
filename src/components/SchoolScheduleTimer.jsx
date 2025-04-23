@@ -55,7 +55,7 @@ if (current.length === 0) {
 
 setActivePeriods(current);
 
-    }, 1000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
