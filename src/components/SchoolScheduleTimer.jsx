@@ -129,7 +129,7 @@ export default function SchoolScheduleTimer() {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-black text-white text-center space-y-8">
-      <div className="text-6xl font-bold">{currentTime.format("hh:mm:ss A")}</div>
+      <div className="text-6xl font-bold">{currentTime.format("hh:mm A")}</div>
       <div className="text-xl tracking-wider">CURRENT TIME</div>
 
       <div className="text-4xl font-semibold">{currentPeriod}</div>
