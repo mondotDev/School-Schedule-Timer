@@ -76,12 +76,13 @@ setActivePeriods(current);
     );
   }
 
-  function getTimeLeft(endTime) {
-    const [endHour, endMinute] = endTime.split(":").map(Number);
-    const end = dayjs().hour(endHour).minute(endMinute);
-    const diff = end.diff(currentTime, "minute");
-    return diff > 0 ? `${diff} min left` : "0 min";
-  }
+function getTimeLeft(endTime, now) {
+  const [endHour, endMinute] = endTime.split(":").map(Number);
+  const end = now.set("hour", endHour).set("minute", endMinute);
+  const diff = end.diff(now, "minute");
+  return diff > 0 ? `${diff} min left` : "0 min";
+}
+
 
   return (
   <div className="text-center p-4 text-white min-h-screen flex flex-col items-center justify-center bg-black">
@@ -100,7 +101,7 @@ setActivePeriods(current);
             {period.period}
           </div>
           <div className="text-md">
-            {getTimeLeft(period.end)}
+            {getTimeLeft(period.end, currentTime)}
           </div>
         </div>
       ))
