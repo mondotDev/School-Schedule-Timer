@@ -38,11 +38,23 @@ function SchoolScheduleTimer() {
       const schedule = isWednesday ? wednesdaySchedule : regularSchedule;
       const time = now.format("HH:mm");
 
-      const current = schedule.filter(
-        (p) => time >= p.start && time < p.end
-      );
+const current = schedule.filter(
+  (p) => time >= p.start && time < p.end
+);
 
-      setActivePeriods(current);
+// If no active periods, check for passing time
+if (current.length === 0) {
+  const upcoming = schedule.find((p) => time < p.start);
+  if (upcoming) {
+    current.push({
+      period: `Passing Time → Period ${upcoming.period}`,
+      end: upcoming.start
+    });
+  }
+}
+
+setActivePeriods(current);
+
     }, 1000);
 
     return () => clearInterval(interval);
