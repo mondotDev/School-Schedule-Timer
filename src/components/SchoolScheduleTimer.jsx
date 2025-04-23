@@ -73,7 +73,7 @@ function SchoolScheduleTimer() {
 
   return (
   <div className="text-center p-4 text-white min-h-screen flex flex-col items-center justify-center bg-black">
-    <h1 className="text-5xl font-bold mb-6">{currentTime.format("hh:mm:ss A")}</h1>
+    <h1 className="text-5xl font-bold mb-6">{currentTime.format("hh:mm A")}</h1>
 
     {activePeriods.length > 0 ? (
       activePeriods.map((period) => (
