@@ -10,7 +10,7 @@ const regularSchedule = [
   { period: "Lunch", start: "12:01", end: "12:36" },
   { period: "5", start: "12:41", end: "13:39" },
   { period: "6", start: "13:44", end: "14:32" },
-  { period: "7", start: "14:37", end: "15:25" }
+  { period: "7", start: "14:37", end: "15:25" },
 ];
 
 const wednesdaySchedule = [
@@ -22,7 +22,7 @@ const wednesdaySchedule = [
   { period: "Lunch", start: "12:31", end: "13:06" },
   { period: "5", start: "13:11", end: "13:59" },
   { period: "6", start: "14:04", end: "14:42" },
-  { period: "7", start: "14:47", end: "15:25" }
+  { period: "7", start: "14:47", end: "15:25" },
 ];
 
 function SchoolScheduleTimer() {
@@ -38,23 +38,22 @@ function SchoolScheduleTimer() {
       const schedule = isWednesday ? wednesdaySchedule : regularSchedule;
       const time = now.format("HH:mm");
 
-const current = schedule.filter(
-  (p) => time >= p.start && time < p.end
-);
+      const current = schedule.filter(
+        (p) => time >= p.start && time < p.end
+      );
 
-// If no active periods, check for passing time
-if (current.length === 0) {
-  const upcoming = schedule.find((p) => time < p.start);
-  if (upcoming) {
-    current.push({
-      period: `Passing Time → Period ${upcoming.period}`,
-      end: upcoming.start
-    });
-  }
-}
+      // If no active periods, check for passing time
+      if (current.length === 0) {
+        const upcoming = schedule.find((p) => time < p.start);
+        if (upcoming) {
+          current.push({
+            period: `Passing Time → Period ${upcoming.period}`,
+            end: upcoming.start,
+          });
+        }
+      }
 
-setActivePeriods(current);
-
+      setActivePeriods(current);
     }, 5000);
 
     return () => clearInterval(interval);
@@ -63,7 +62,7 @@ setActivePeriods(current);
   function isInWednesdayRange(date) {
     const month = date.month();
     const dateOfMonth = date.date();
-    if (month < 8 || month > 4) return false;
+    if (month < 8 || month > 4) return false; // Sep–May only
     const firstOfMonth = dayjs(new Date(date.year(), month, 1));
     let wednesdays = [];
     for (let i = 0; i < 31; i++) {
@@ -76,43 +75,42 @@ setActivePeriods(current);
     );
   }
 
-function getTimeLeft(endTime, now) {
-  const [endHour, endMinute] = endTime.split(":").map(Number);
-  const end = now.set("hour", endHour).set("minute", endMinute);
-  const diff = end.diff(now, "minute");
-  return diff > 0 ? `${diff} min left` : "0 min";
-}
-
+  function getTimeLeft(endTime, now) {
+    const [endHour, endMinute] = endTime.split(":").map(Number);
+    const end = now.set("hour", endHour).set("minute", endMinute);
+    const diff = end.diff(now, "minute");
+    return diff > 0 ? `${diff} min left` : "0 min";
+  }
 
   return (
-  <div className="text-center p-4 text-white min-h-screen flex flex-col items-center justify-center bg-black">
-    <h1 className="text-5xl font-bold mb-6">{currentTime.format("hh:mm A")}</h1>
+    <div className="w-72 bg-white dark:bg-gray-800 rounded-2xl shadow p-4 text-center">
+      <h1 className="text-5xl font-bold text-black dark:text-white mb-4">
+        {currentTime.format("hh:mm A")}
+      </h1>
 
-    {activePeriods.length > 0 ? (
-      activePeriods.map((period) => (
-        <div
-          key={period.period}
-          className="bg-white text-black rounded-xl px-6 py-4 mb-4 w-72 shadow-lg"
-        >
-          <div className="text-sm uppercase text-gray-500 font-semibold mb-1">
-            Period
+      {activePeriods.length > 0 ? (
+        activePeriods.map((period) => (
+          <div key={period.period}>
+            <div className="text-xs uppercase text-gray-500 dark:text-gray-400 mb-1">
+              Period
+            </div>
+            <div className="text-2xl font-bold text-black dark:text-white mb-1">
+              {period.period}
+            </div>
+            <div className="text-sm text-gray-700 dark:text-gray-300">
+              {getTimeLeft(period.end, currentTime)}
+            </div>
           </div>
-          <div className="text-xl font-bold">
-            {period.period}
-          </div>
-          <div className="text-md">
-            {getTimeLeft(period.end, currentTime)}
-          </div>
+        ))
+      ) : (
+        <div className="text-md text-gray-500 dark:text-gray-300">
+          {currentTime.hour() < 8 || currentTime.hour() >= 16
+            ? "School Closed"
+            : "Passing Time"}
         </div>
-      ))
-    ) : (
-      <div className="text-xl text-gray-400">
-        {currentTime.hour() < 8 || currentTime.hour() >= 16 ? "School Closed" : "Passing Time"}
-      </div>
-    )}
-  </div>
-);
-
+      )}
+    </div>
+  );
 }
 
 export default SchoolScheduleTimer;
