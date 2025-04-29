@@ -1,6 +1,6 @@
 
 {
-  "name": "school-schedule-timer",
+  "name": "holmes-countdown",
   "version": "1.0.0",
   "scripts": {
     "dev": "vite",
