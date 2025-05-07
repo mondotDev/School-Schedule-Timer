@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore);
 
-import instructionalDays from '../utils/schoolDays';
+import { instructionalDays } from '../utils/scheduleUtils';
 
 export default function SchoolDaysCounter() {
   const today = dayjs().startOf('day');
