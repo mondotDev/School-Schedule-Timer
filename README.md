@@ -18,6 +18,14 @@ This app helps students and teachers easily keep track of the school day at a gl
 - Tailwind CSS
 - Vercel hosting
 
+## Development
+Run linting and tests locally with the provided npm scripts:
+
+```bash
+npm run lint   # check code style with ESLint
+npm run test   # execute unit tests with Vitest
+```
+
 ## Demo
 [Visit Holmes Countdown](https://holmes-countdown.vercel.app)
 
