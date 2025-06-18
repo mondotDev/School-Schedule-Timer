@@ -52,7 +52,7 @@ export function getActivePeriods(now, schedule) {
     const [endH, endM] = p.end.split(":").map(Number);
     const start = dayjs(now).hour(startH).minute(startM).second(0);
     const end = dayjs(now).hour(endH).minute(endM).second(0);
-    return now.isAfter(start) && now.isBefore(end);
+    return now.isSameOrAfter(start) && now.isBefore(end);
   });
 
   if (current.length === 0) {
