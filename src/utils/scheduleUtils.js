@@ -30,8 +30,11 @@ const wednesdaySchedule = [
 ];
 
 export function isInWednesdayRange(date) {
-  const start = dayjs("2024-09-01");
-  const end = dayjs("2025-05-31");
+  const { instructionalYear } = scheduleData;
+  const startYear = dayjs(instructionalYear.firstDay).year();
+  const endYear = dayjs(instructionalYear.lastDay).year();
+  const start = dayjs(`${startYear}-09-01`);
+  const end = dayjs(`${endYear}-05-31`);
   return (
     date.isSameOrAfter(start, "day") &&
     date.isSameOrBefore(end, "day")

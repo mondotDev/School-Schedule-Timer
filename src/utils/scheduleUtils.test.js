@@ -5,25 +5,33 @@ import {
   getTodaySchedule,
   getTimeLeft,
 } from './scheduleUtils';
+import scheduleData from './scheduleData.json';
 
 describe('schedule utils', () => {
   it('checks if date is in Wednesday range', () => {
-    const inRange = dayjs('2024-10-02');
-    const outOfRange = dayjs('2025-07-01');
+    const { instructionalYear } = scheduleData;
+    const startYear = dayjs(instructionalYear.firstDay).year();
+    const endYear = dayjs(instructionalYear.lastDay).year();
+    const inRange = dayjs(`${startYear}-10-01`);
+    const outOfRange = dayjs(`${endYear}-07-01`);
     expect(isInWednesdayRange(inRange)).toBe(true);
     expect(isInWednesdayRange(outOfRange)).toBe(false);
   });
 
   it('returns Wednesday schedule when applicable', () => {
-    const wednesday = dayjs('2024-10-02'); // Wednesday
-    const monday = dayjs('2024-09-30'); // Monday
+    const { instructionalYear } = scheduleData;
+    const startYear = dayjs(instructionalYear.firstDay).year();
+    const wednesday = dayjs(`${startYear}-10-01`); // Wednesday
+    const monday = dayjs(`${startYear}-09-29`); // Monday
     expect(getTodaySchedule(wednesday)[0].start).not.toBe(
       getTodaySchedule(monday)[0].start
     );
   });
 
   it('computes time left correctly', () => {
-    const now = dayjs('2024-09-01T08:00:00');
+    const { instructionalYear } = scheduleData;
+    const startYear = dayjs(instructionalYear.firstDay).year();
+    const now = dayjs(`${startYear}-09-01T08:00:00`);
     expect(getTimeLeft('08:05', now)).toBe('5 min left');
   });
 });
