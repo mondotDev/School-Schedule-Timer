@@ -7,6 +7,7 @@ This app helps students and teachers easily keep track of the school day at a gl
 
 ## Features
 - 📅 Automatically adjusts for regular and Wednesday (shortened) schedules
+- 📆 Late Start Wednesdays run from September through May
 - ⏰ Displays current time and active period
 - 🔔 Countdown to end of the current period
 - 🚪 Displays "Passing Time" or "School Closed" when applicable
