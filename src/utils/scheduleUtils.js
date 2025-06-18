@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
 
 const regularSchedule = [
   { period: "9th Gr. Co-Enrolled", start: "08:15", end: "09:05" },
@@ -27,25 +29,18 @@ const wednesdaySchedule = [
 ];
 
 export function isInWednesdayRange(date) {
-  const month = date.month();
-  const dateOfMonth = date.date();
-  if (month < 8 || month > 4) return false;
-  const first = dayjs(new Date(date.year(), month, 1));
-  let wednesdays = [];
-  for (let i = 0; i < 31; i++) {
-    const d = first.add(i, "day");
-    if (d.day() === 3) wednesdays.push(d.date());
-  }
-  return dateOfMonth >= wednesdays[1] && dateOfMonth <= wednesdays.at(-1);
+  const start = dayjs("2024-09-01");
+  const end = dayjs("2025-05-31");
+  return (
+    date.isSameOrAfter(start, "day") &&
+    date.isSameOrBefore(end, "day")
+  );
 }
+
 
 export function getTodaySchedule(now) {
   const isWednesday = now.day() === 3; // 3 = Wednesday
-  const inWednesdayRange =
-    now.isAfter(dayjs("2024-08-25")) &&
-    now.isBefore(dayjs("2025-05-31")); // ⬅️ end of May
-
-  return isWednesday && inWednesdayRange
+  return isWednesday && isInWednesdayRange(now)
     ? wednesdaySchedule
     : regularSchedule;
 }
