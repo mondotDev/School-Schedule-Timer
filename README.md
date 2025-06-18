@@ -22,5 +22,17 @@ This app helps students and teachers easily keep track of the school day at a gl
 [Visit Holmes Countdown](https://holmes-countdown.vercel.app)
 
 ## Contact
-Interested in a custom countdown app for your own school?  
+Interested in a custom countdown app for your own school?
 📧 Email [melissa.mondot@gmail.com](mailto:melissa.mondot@gmail.com)
+
+## Updating Holidays and Instructional Days
+The list of non-school days and the start/end dates of the school year are stored
+in `src/utils/scheduleData.json`. Edit this file each summer to reflect the new
+calendar:
+
+1. Replace the `holidays` array with the official holidays and breaks for the
+   upcoming year.
+2. Update `instructionalYear.firstDay` and `instructionalYear.lastDay` with the
+   first and last days of school.
+
+The app will automatically recalculate the instructional days on the next build.
