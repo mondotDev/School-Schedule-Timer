@@ -9,7 +9,19 @@ export default function SchoolDaysCounter() {
   const today = dayjs().startOf('day');
 
   const totalDays = instructionalDays.length;
-  const daysCompleted = instructionalDays.filter(dateStr =>
+
+  if (totalDays === 0) {
+    return (
+      <div className="w-72 bg-white dark:bg-gray-800 rounded-2xl shadow p-4 text-center">
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-3 flex items-center gap-2">
+          📅 <span>School Year Progress</span>
+        </h2>
+        <p className="text-gray-700 dark:text-gray-300">No school days defined</p>
+      </div>
+    );
+  }
+
+  const daysCompleted = instructionalDays.filter((dateStr) =>
     dayjs(dateStr).isSameOrBefore(today)
   ).length;
 
