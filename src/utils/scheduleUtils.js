@@ -86,8 +86,9 @@ export function getTimeLeft(endTime, now) {
 }
 
 export function isSchoolYearOver(date) {
+  const first = dayjs(scheduleData.instructionalYear.firstDay);
   const last = dayjs(scheduleData.instructionalYear.lastDay);
-  return date.isAfter(last, "day");
+  return date.isBefore(first, "day") || date.isAfter(last, "day");
 }
 
 

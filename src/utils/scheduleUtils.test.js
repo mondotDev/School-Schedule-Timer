@@ -36,11 +36,16 @@ describe('schedule utils', () => {
     expect(getTimeLeft('08:05', now)).toBe('5 min left');
   });
 
-  it('detects when the school year is over', () => {
+  it('detects when the school year is over or not yet started', () => {
     const { instructionalYear } = scheduleData;
+    const firstDay = dayjs(instructionalYear.firstDay);
     const lastDay = dayjs(instructionalYear.lastDay);
+    const beforeFirstDay = firstDay.subtract(1, 'day');
     const afterLastDay = lastDay.add(1, 'day');
+
+    expect(isSchoolYearOver(beforeFirstDay)).toBe(true);
     expect(isSchoolYearOver(afterLastDay)).toBe(true);
+    expect(isSchoolYearOver(firstDay)).toBe(false);
     expect(isSchoolYearOver(lastDay)).toBe(false);
   });
 });

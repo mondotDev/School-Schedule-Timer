@@ -13,7 +13,7 @@ function SchoolScheduleTimer() {
   const [summerBreak, setSummerBreak] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const update = () => {
       const now = dayjs();
       setCurrentTime(now);
 
@@ -29,7 +29,10 @@ function SchoolScheduleTimer() {
       const periods = getActivePeriods(now, schedule);
 
       setActivePeriods(periods);
-    }, 5000);
+    };
+
+    update();
+    const interval = setInterval(update, 5000);
 
     return () => clearInterval(interval);
   }, []);
