@@ -4,6 +4,7 @@ import {
   isInWednesdayRange,
   getTodaySchedule,
   getTimeLeft,
+  isSchoolYearOver,
 } from './scheduleUtils';
 import scheduleData from './scheduleData.json';
 
@@ -33,5 +34,13 @@ describe('schedule utils', () => {
     const startYear = dayjs(instructionalYear.firstDay).year();
     const now = dayjs(`${startYear}-09-01T08:00:00`);
     expect(getTimeLeft('08:05', now)).toBe('5 min left');
+  });
+
+  it('detects when the school year is over', () => {
+    const { instructionalYear } = scheduleData;
+    const lastDay = dayjs(instructionalYear.lastDay);
+    const afterLastDay = lastDay.add(1, 'day');
+    expect(isSchoolYearOver(afterLastDay)).toBe(true);
+    expect(isSchoolYearOver(lastDay)).toBe(false);
   });
 });

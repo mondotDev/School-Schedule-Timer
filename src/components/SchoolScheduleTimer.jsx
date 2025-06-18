@@ -4,16 +4,26 @@ import {
   getTodaySchedule,
   getActivePeriods,
   getTimeLeft,
+  isSchoolYearOver,
 } from "../utils/scheduleUtils";
 
 function SchoolScheduleTimer() {
   const [currentTime, setCurrentTime] = useState(dayjs());
   const [activePeriods, setActivePeriods] = useState([]);
+  const [summerBreak, setSummerBreak] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
       const now = dayjs();
       setCurrentTime(now);
+
+      if (isSchoolYearOver(now)) {
+        setSummerBreak(true);
+        setActivePeriods([]);
+        return;
+      } else {
+        setSummerBreak(false);
+      }
 
       const schedule = getTodaySchedule(now);
       const periods = getActivePeriods(now, schedule);
@@ -34,7 +44,11 @@ function SchoolScheduleTimer() {
       </div>
 
       {/* Active Period Card */}
-      {activePeriods.length > 0 ? (
+      {summerBreak ? (
+        <div className="bg-white text-black rounded-2xl px-6 py-4 w-72 shadow-lg text-xl">
+          Happy Summer!
+        </div>
+      ) : activePeriods.length > 0 ? (
         activePeriods.map((period, index) => (
           <div
             key={`${period.period}-${index}`}
