@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+import scheduleData from "./scheduleData.json";
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
@@ -82,45 +83,9 @@ export function getTimeLeft(endTime, now) {
 }
 
 
-// List of holidays and non-instructional days
-const holidays = [
-  "2024-09-02", // Labor Day
-  "2024-10-14", // Indigenous Peoples' Day
-  "2024-11-11", // Veterans Day
-  "2024-11-25", // Thanksgiving Break Start
-  "2024-11-26",
-  "2024-11-27",
-  "2024-11-28",
-  "2024-11-29", // Thanksgiving Break End
-  "2024-12-23", // Winter Break Start
-  "2024-12-24",
-  "2024-12-25",
-  "2024-12-26",
-  "2024-12-27",
-  "2024-12-30",
-  "2024-12-31",
-  "2025-01-01",
-  "2025-01-02",
-  "2025-01-03", // Winter Break End
-  "2025-01-06", // Teacher Workday
-  "2025-01-20", // Martin Luther King Jr. Day
-  "2025-02-17", // Presidents' Week Start
-  "2025-02-18",
-  "2025-02-19",
-  "2025-02-20",
-  "2025-02-21", // Presidents' Week End
-  "2025-03-31", // Spring Break Start
-  "2025-04-01",
-  "2025-04-02",
-  "2025-04-03",
-  "2025-04-04", // Spring Break End
-  "2025-04-25", // Local Holiday
-  "2025-05-26"  // Memorial Day
-];
-
-// Start and end dates of the instructional year
-const firstDay = dayjs("2024-08-26");
-const lastDay = dayjs("2025-06-12");
+const { holidays, instructionalYear } = scheduleData;
+const firstDay = dayjs(instructionalYear.firstDay);
+const lastDay = dayjs(instructionalYear.lastDay);
 
 export const instructionalDays = [];
 
