@@ -44,3 +44,7 @@ calendar:
    first and last days of school.
 
 The app will automatically recalculate the instructional days on the next build.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
