@@ -19,6 +19,24 @@ This app helps students and teachers easily keep track of the school day at a gl
 - Vercel hosting
 
 ## Development
+Install dependencies first:
+
+```bash
+npm install
+```
+
+Start a local dev server with hot reload:
+
+```bash
+npm run dev
+```
+
+Create an optimized production build with:
+
+```bash
+npm run build
+```
+
 Run linting and tests locally with the provided npm scripts:
 
 ```bash
